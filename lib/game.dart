@@ -47,8 +47,7 @@ const List<String> legalWords = [
   'setup',
   'admin',
   'agile',
-  'scrum'
-
+  'scrum',
 ];
 
 /// Additional words accepted as guesses beyond those in [legalWords].
@@ -61,8 +60,7 @@ const List<String> legalGuesses = [
   'scope',
   'class',
   'virus',
-  'admin'
-  
+  'admin',
 ];
 
 /// Game state of a single round of Birdle,
