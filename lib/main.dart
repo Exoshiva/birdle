@@ -11,15 +11,26 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // Hide the debug banner
+      themeMode: ThemeMode.light, // Use light theme,
       home: Scaffold(
+        backgroundColor: const Color(0xFFF8F9FA), // Set a light background color
         appBar: AppBar(
+          backgroundColor: const Color(0xFDFFFF64), // Make the app bar transparent
+          elevation: 0, // Remove the shadow
           title: const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Birdley Game'),
+            alignment: Alignment.center, // Center the title
+            child: Text('Birdle Game', style: TextStyle(color: Colors.black),
           ),
         ),
-        body: Center(child: GamePage()),
       ),
+        body: Center(
+          child: SizedBox(
+            width: 350, // Set a fixed width for the game area
+            child: GamePage(),
+        ),
+      ),
+    ),
     );
   }
 }
@@ -42,9 +53,9 @@ class Tile extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         color: switch (hitType) {
-          HitType.hit => Colors.green,
-          HitType.partial => Colors.yellow,
-          HitType.miss => Colors.grey,
+          HitType.hit => const Color(0xFD43FF64), // Green for correct position
+          HitType.partial => const Color(0xFFDFFFF64), // Yellow for correct letter, wrong position
+          HitType.miss => const Color(0x667D7D7D), // Grey for incorrect letter
           _ => Colors.white,
         },
       ),
