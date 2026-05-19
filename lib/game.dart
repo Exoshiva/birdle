@@ -31,20 +31,38 @@ typedef Letter = ({String char, HitType type});
 const List<String> allLegalGuesses = [...legalWords, ...legalGuesses];
 
 /// Words that can be chosen as the hidden word.
-const List<String> legalWords = ['aback', 'abase', 'abate', 'abbey', 'abbot'];
+const List<String> legalWords = [
+  'coder',
+  'array',
+  'cloud',
+  'debug',
+  'token',
+  'cache',
+  'stack',
+  'logic',
+  'input',
+  'index',
+  'patch',
+  'build',
+  'setup',
+  'admin',
+  'agile',
+  'scrum'
+
+];
 
 /// Additional words accepted as guesses beyond those in [legalWords].
 const List<String> legalGuesses = [
-  'aback',
-  'abase',
-  'abate',
-  'abbey',
-  'abbot',
-  'abhor',
-  'abide',
-  'abled',
-  'abode',
-  'abort',
+  ...legalWords,
+  'pixel',
+  'apple',
+  'linux',
+  'frame',
+  'scope',
+  'class',
+  'virus',
+  'admin'
+  
 ];
 
 /// Game state of a single round of Birdle,
