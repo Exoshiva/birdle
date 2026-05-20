@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'game.dart';
-//import 'jjk_game.dart'; // later import for Jujutsu Kaisen category
-// import 'bildung_game.dart'; // later import for education category, not implemented yet
-// import 'spiele_game.dart'; // later import for games category, not implemented yet
-// import 'filme_game.dart'; // later import for movies category, not implemented yet
-// import 'allgemein_game.dart'; // later import for general category, not implemented yet
+//import 'jjk_game.dart'; // import for Jujutsu Kaisen category
+//import 'education_game.dart'; // import for education category
+//import 'gaming_game.dart'; // import for games category
+//import 'movies_game.dart'; // import for movies category
+//import 'general_game.dart'; // import for general category
 
 void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+// ---- Main Application Widget with Navigation and Theming -----
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+// ---- State class for MainApp to manage navigation and theming based on selected category -----
+class _MainAppState extends State<MainApp> {
+  Widget _aktuelleSeite = const GamePage();
+  String _aktuelleKategorieText = 'Kategorie: IT & Coding'; 
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
       ), // Use light theme
-
+      
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(252, 255, 255, 100), // Make the app bar yellow
@@ -44,7 +54,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
 
-        // Side Navigation Bar with category theming
+      // ---- Navigation Drawer with Category Selection and Theming -----
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -71,11 +81,15 @@ class MainApp extends StatelessWidget {
                 ),
               ),
 
-              // List of categories in the drawer
+            // ---- Category selection tiles with icons and theming for the game page -----
               ListTile(
                 leading: const Icon(Icons.code),
                 title: const Text('IT & Coding (5 Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on IT & Coding game page,
+                    _aktuelleKategorieText = 'Kategorie: IT & Coding '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -84,6 +98,10 @@ class MainApp extends StatelessWidget {
                 leading: const Icon(Icons.school),
                 title: const Text('Bildung (5 Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on Education game page,
+                    _aktuelleKategorieText = 'Kategorie: Bildung '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -92,6 +110,10 @@ class MainApp extends StatelessWidget {
                 leading: const Icon(Icons.games),
                 title: const Text('Spiele (5 Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on Games game page,
+                    _aktuelleKategorieText = 'Kategorie: Spiele '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -100,6 +122,10 @@ class MainApp extends StatelessWidget {
                 leading: const Icon(Icons.movie),
                 title: const Text('Filme (5 Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on Movies game page,
+                    _aktuelleKategorieText = 'Kategorie: Filme '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -108,6 +134,10 @@ class MainApp extends StatelessWidget {
                 leading: const Icon(Icons.sports_esports),
                 title: const Text('Allgemein (5 Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on General game page,
+                    _aktuelleKategorieText = 'Kategorie: Allgemein '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -116,6 +146,10 @@ class MainApp extends StatelessWidget {
                 leading: const Icon(Icons.star),
                 title: const Text('Jujutsu Kaisen (Charaktere, X Buchstaben)'),
                 onTap: () {
+                  setState(() {
+                    _aktuelleSeite = const GamePage(); // focus on Jujutsu Kaisen game page,
+                    _aktuelleKategorieText = 'Kategorie: Jujutsu Kaisen '; // set the current category for theming and game logic
+                  });
                   // Handle category selection, e.g., navigate to a different game page or set the category in the game state
                   Navigator.pop(context); // Close the drawer after selection
                 },
@@ -154,7 +188,7 @@ class MainApp extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20), // Add some spacing at the top
 
-                  // Game focus themeing 
+                  // ---- Category display with icon and theming to match the selected category -----
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
@@ -168,7 +202,7 @@ class MainApp extends StatelessWidget {
                         const Icon(Icons.bug_report, color: Colors.green), // Green bug icon
                         const SizedBox(width: 8), // Spacing between icon and text
                         Text(
-                          'Kategorie: IT & Coding',
+                          _aktuelleKategorieText, // Display the current category text
                           style: TextStyle(
                             color: Colors.green.shade700, // Adjust text color based on theme
                           ),
@@ -181,7 +215,7 @@ class MainApp extends StatelessWidget {
                   // The actual game page
                   Expanded(
                     child: SingleChildScrollView(
-                      child: GamePage(),
+                      child: _aktuelleSeite, // Display the current game page based on the selected category
                     ),
                   ),
                 ],
@@ -193,6 +227,8 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+
+// ---- Game Page and Tile Widgets ----
 
 class Tile extends StatelessWidget {
   const Tile(this.letter, this.hitType, {super.key});
@@ -226,14 +262,13 @@ class Tile extends StatelessWidget {
   }
 }
 
+// ---- Game Page State to manage the game logic and user interactions -----
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
   @override
   State<GamePage> createState() => _GamePageState();
 }
-  //final Game _game = Game(); moved to _GamePageState to avoid creating a new game on every rebuild
-
   class _GamePageState extends State<GamePage> {
     final Game _game = Game();
 
@@ -308,7 +343,9 @@ class GuessInput extends StatelessWidget {
           icon: const Icon(Icons.arrow_circle_up),
           onPressed: _onSubmit,
           ),
+          
         ],
     );
   }
 }
+
