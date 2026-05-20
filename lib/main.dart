@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'game.dart';
+//import 'jjk_game.dart'; // later import for Jujutsu Kaisen category
+// import 'bildung_game.dart'; // later import for education category, not implemented yet
+// import 'spiele_game.dart'; // later import for games category, not implemented yet
+// import 'filme_game.dart'; // later import for movies category, not implemented yet
+// import 'allgemein_game.dart'; // later import for general category, not implemented yet
 
 void main() {
   runApp(const MainApp());
@@ -20,7 +25,6 @@ class MainApp extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(252, 255, 255, 100), // Make the app bar yellow
           elevation : 1, 
-
           // add border shadow to title widget to make it pop against the background
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1), // minimal height for the shadow 
@@ -37,6 +41,98 @@ class MainApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
+          ),
+        ),
+
+        // Side Navigation Bar with category theming
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              // Header section of the drawer with category theming
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.fromARGB(255, 255, 255, 100),
+                      Color.fromARGB(255, 255, 255, 100),
+                    ],
+                  ),
+                ),
+                child: Text(
+                  'Menü und Themen',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+              // List of categories in the drawer
+              ListTile(
+                leading: const Icon(Icons.code),
+                title: const Text('IT & Coding (5 Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.school),
+                title: const Text('Bildung (5 Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.games),
+                title: const Text('Spiele (5 Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.movie),
+                title: const Text('Filme (5 Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.sports_esports),
+                title: const Text('Allgemein (5 Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.star),
+                title: const Text('Jujutsu Kaisen (Charaktere, X Buchstaben)'),
+                onTap: () {
+                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+              const Divider(), // add clear parting separation  
+
+              // placeholderrr for level selection, not implemented yet
+              ListTile(
+                leading: const Icon(Icons.tune, color: Colors.blueGrey), // grey icon for level selection
+                title: const Text('Level 1 (Einfach)'),
+                subtitle: const Text('5 Buchstaben, 5 Versuche'),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer after selection
+                },
+              ),
+
+            ],
           ),
         ),
         body: Container(
@@ -58,7 +154,7 @@ class MainApp extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20), // Add some spacing at the top
 
-                  // Game focus themeing
+                  // Game focus themeing 
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
@@ -131,7 +227,7 @@ class Tile extends StatelessWidget {
 }
 
 class GamePage extends StatefulWidget {
-  GamePage({super.key});
+  const GamePage({super.key});
 
   @override
   State<GamePage> createState() => _GamePageState();
