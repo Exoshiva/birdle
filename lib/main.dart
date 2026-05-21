@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'game.dart';
-//import 'jjk_game.dart'; // import for Jujutsu Kaisen category
+import 'jjk_game.dart'; // import for Jujutsu Kaisen category
 //import 'education_game.dart'; // import for education category
 //import 'gaming_game.dart'; // import for games category
 //import 'movies_game.dart'; // import for movies category
@@ -56,7 +56,9 @@ class _MainAppState extends State<MainApp> {
 
       // ---- Navigation Drawer with Category Selection and Theming -----
         drawer: Drawer(
-          child: ListView(
+          child: Builder(
+            builder: (BuildContext innerContext) {
+          return ListView(
             padding: EdgeInsets.zero,
             children: [
               // Header section of the drawer with category theming
@@ -81,92 +83,94 @@ class _MainAppState extends State<MainApp> {
                 ),
               ),
 
-            // ---- Category selection tiles with icons and theming for the game page -----
-              ListTile(
-                leading: const Icon(Icons.code),
-                title: const Text('IT & Coding (5 Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on IT & Coding game page,
-                    _aktuelleKategorieText = 'Kategorie: IT & Coding '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.school),
-                title: const Text('Bildung (5 Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on Education game page,
-                    _aktuelleKategorieText = 'Kategorie: Bildung '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.games),
-                title: const Text('Spiele (5 Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on Games game page,
-                    _aktuelleKategorieText = 'Kategorie: Spiele '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.movie),
-                title: const Text('Filme (5 Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on Movies game page,
-                    _aktuelleKategorieText = 'Kategorie: Filme '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.sports_esports),
-                title: const Text('Allgemein (5 Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on General game page,
-                    _aktuelleKategorieText = 'Kategorie: Allgemein '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.star),
-                title: const Text('Jujutsu Kaisen (Charaktere, X Buchstaben)'),
-                onTap: () {
-                  setState(() {
-                    _aktuelleSeite = const GamePage(); // focus on Jujutsu Kaisen game page,
-                    _aktuelleKategorieText = 'Kategorie: Jujutsu Kaisen '; // set the current category for theming and game logic
-                  });
-                  // Handle category selection, e.g., navigate to a different game page or set the category in the game state
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
-              const Divider(), // add clear parting separation  
+// ---- Category selection tiles with icons and theming for the game page -----
+                  ListTile(
+                    leading: const Icon(Icons.code),
+                    title: const Text('IT & Coding (5 Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const GamePage(); // focus on IT & Coding game page,
+                        _aktuelleKategorieText = 'Kategorie: IT & Coding '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.school),
+                    title: const Text('Bildung (5 Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const GamePage(); // focus on Education game page,
+                        _aktuelleKategorieText = 'Kategorie: Bildung '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.games),
+                    title: const Text('Spiele (5 Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const GamePage(); // focus on Games game page,
+                        _aktuelleKategorieText = 'Kategorie: Spiele '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.movie),
+                    title: const Text('Filme (5 Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const GamePage(); // focus on Movies game page,
+                        _aktuelleKategorieText = 'Kategorie: Filme '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.sports_esports),
+                    title: const Text('Allgemein (5 Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const GamePage(); // focus on General game page,
+                        _aktuelleKategorieText = 'Kategorie: Allgemein '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.star),
+                    title: const Text('Jujutsu Kaisen (Charaktere, X Buchstaben)'),
+                    onTap: () {
+                      setState(() {
+                        _aktuelleSeite = const JjkGamePage(); // focus on Jujutsu Kaisen game page,
+                        _aktuelleKategorieText = 'Kategorie: Jujutsu Kaisen '; // set the current category for theming and game logic
+                      });
+                      // Handle category selection, e.g., navigate to a different game page or set the category in the game state
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
+                  const Divider(), // add clear parting separation  
 
-              // placeholderrr for level selection, not implemented yet
-              ListTile(
-                leading: const Icon(Icons.tune, color: Colors.blueGrey), // grey icon for level selection
-                title: const Text('Level 1 (Einfach)'),
-                subtitle: const Text('5 Buchstaben, 5 Versuche'),
-                onTap: () {
-                  Navigator.pop(context); // Close the drawer after selection
-                },
-              ),
+                  // placeholderrr for level selection, not implemented yet
+                  ListTile(
+                    leading: const Icon(Icons.tune, color: Colors.blueGrey), // grey icon for level selection
+                    title: const Text('Level 1 (Einfach)'),
+                    subtitle: const Text('5 Buchstaben, 5 Versuche'),
+                    onTap: () {
+                      Navigator.pop(innerContext); // Close the drawer after selection
+                    },
+                  ),
 
-            ],
+                ],
+              );
+            } // HIER: Das Ende der Builder-Funktion
           ),
         ),
         body: Container(
