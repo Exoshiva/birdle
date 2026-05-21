@@ -4,37 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // ---------------------------------------------------------
-// 1. The Game-Logic
+// 1. The Game-Logic (now with dynamic levels!)
 // ---------------------------------------------------------
 enum JjkHitType { none, hit, partial, miss }
 typedef JjkLetter = ({String char, JjkHitType type});
 
 const List<String> jjkLegalWords = [
-  'panda',
-  'yuuji',
-  'touji',
-  'getou',
-  'choso',
-  'curse',
-  'tokyo',
-  'kyoto',
-  'demon',
+  // Level 1: 5 Letters
+  'panda', 'yuuji', 'touji', 'getou', 'choso', 
+  'curse', 'tokyo', 'kyoto', 'demon', 'dagon',
+
+  // Level 2: 6 Letters
+  'sukuna', 'satoru', 'megumi', 'nobara', 'kaisen', 
+  'nanami', 'mahito', 'hanami', 'hakari', 'tengen',
+
+  // Level 3: 7 Letters
+  'jujutsu', 'inumaki', 'kashimo', 'kenjaku', 'sorcery'
 ];
 
-const List<String> jjkTargetWords = [...jjkLegalWords
-  
-
-];
+const List<String> jjkTargetWords = [...jjkLegalWords];
 
 class JjkGame {
   static const int defaultMaxGuesses = 5;
-
-  JjkGame({this.maxGuesses = defaultMaxGuesses, this.seed})
-      : _wordToGuess = _generateInitialWord(seed),
-        _guesses = List<JjkWord>.filled(maxGuesses, JjkWord.empty());
+  
+  // NEW: Accepts the desired wordLength
+  JjkGame({this.maxGuesses = defaultMaxGuesses, this.wordLength = 5, this.seed})
+      : _wordToGuess = _generateInitialWord(seed, wordLength),
+        _guesses = List<JjkWord>.filled(maxGuesses, JjkWord.empty(wordLength));
 
   final int maxGuesses;
+  final int wordLength; // NEW
   final int? seed;
+
   JjkWord _wordToGuess;
   List<JjkWord> _guesses;
 
@@ -43,7 +44,8 @@ class JjkGame {
 
   JjkWord get previousGuess {
     final index = _guesses.lastIndexWhere((word) => word.isNotEmpty);
-    return index == -1 ? JjkWord.empty() : _guesses[index];
+    // NEW: Returns an empty row with the appropriate length
+    return index == -1 ? JjkWord.empty(wordLength) : _guesses[index];
   }
 
   int get activeIndex => _guesses.indexWhere((word) => word.isEmpty);
@@ -64,8 +66,9 @@ class JjkGame {
   bool get didLose => guessesRemaining == 0 && !didWin;
 
   void resetGame() {
-    _wordToGuess = _generateInitialWord(seed);
-    _guesses = List<JjkWord>.filled(maxGuesses, JjkWord.empty());
+    // NEW: Generates a new word with the accepted length
+    _wordToGuess = _generateInitialWord(seed, wordLength);
+    _guesses = List<JjkWord>.filled(maxGuesses, JjkWord.empty(wordLength));
   }
 
   JjkWord guess(String guess) {
@@ -73,11 +76,13 @@ class JjkGame {
     addGuessToList(result);
     return result;
   }
-
-  bool isLegalGuess(String guess) => JjkWord.fromString(guess).isLegalGuess;
+  
+  // NEW: Checks whether the length is correct
+  bool isLegalGuess(String guess) => 
+      guess.length == wordLength && jjkTargetWords.contains(guess.toLowerCase());
 
   JjkWord matchGuessOnly(String guess) =>
-      JjkWord.fromString(guess).evaluateGuess(_wordToGuess);
+      JjkWord.fromString(guess, wordLength).evaluateGuess(_wordToGuess);
 
   void addGuessToList(JjkWord guess) {
     final guessIndex = activeIndex;
@@ -85,19 +90,30 @@ class JjkGame {
     _guesses[guessIndex] = guess;
   }
 
-  static JjkWord _generateInitialWord(int? seed) =>
-      seed == null ? JjkWord.random() : JjkWord.fromSeed(seed);
+  static JjkWord _generateInitialWord(int? seed, int length) {
+    final validWords = jjkTargetWords.where((w) => w.length == length).toList();
+    if (validWords.isEmpty) throw StateError('No words found for length $length!');
+
+    if (seed == null) {
+      final random = Random();
+      return JjkWord.fromString(validWords[random.nextInt(validWords.length)], length);
+    } else {
+      return JjkWord.fromString(validWords[seed % validWords.length], length);
+    }
+  }
 }
 
 class JjkWord with IterableMixin<JjkLetter> {
   JjkWord(this._letters);
 
-  factory JjkWord.empty() =>
-      JjkWord(List<JjkLetter>.filled(5, (char: '', type: JjkHitType.none)));
+  // NEW: Creates an empty word with dynamic length
+  factory JjkWord.empty(int length) =>
+      JjkWord(List<JjkLetter>.filled(length, (char: '', type: JjkHitType.none)));
 
-  factory JjkWord.fromString(String guess) {
-    if (guess.length != 5) {
-      throw ArgumentError.value(guess, 'guess', 'Must be exactly 5 characters long');
+  // NEW: Checks against the requiredLength instead of a hardcoded 5
+  factory JjkWord.fromString(String guess, int requiredLength) {
+    if (guess.length != requiredLength) {
+      throw ArgumentError.value(guess, 'guess', 'Must be exactly $requiredLength characters long');
     }
     final letters = guess
         .toLowerCase()
@@ -106,15 +122,6 @@ class JjkWord with IterableMixin<JjkLetter> {
         .toList();
     return JjkWord(letters);
   }
-
-  factory JjkWord.random() {
-    final random = Random();
-    final nextWord = jjkLegalWords[random.nextInt(jjkLegalWords.length)];
-    return JjkWord.fromString(nextWord);
-  }
-
-  factory JjkWord.fromSeed(int seed) =>
-      JjkWord.fromString(jjkLegalWords[seed % jjkLegalWords.length]);
 
   final List<JjkLetter> _letters;
 
@@ -189,18 +196,18 @@ class JjkTile extends StatelessWidget {
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300), // Originaler, sanfter Rand
+        border: Border.all(color: Colors.grey.shade300), 
         color: switch (hitType) {
-          JjkHitType.hit => const Color(0xFD43FF64), // Original Grün
-          JjkHitType.partial => const Color(0xFFFFFF64), // Original Gelb
-          JjkHitType.miss => const Color(0x667D7D7D), // Original Grau
+          JjkHitType.hit => const Color(0xFD43FF64), 
+          JjkHitType.partial => const Color(0xFFFFFF64), 
+          JjkHitType.miss => const Color(0x667D7D7D), 
           _ => Colors.white,
         },
       ),
       child: Center(
         child: Text(
           letter.toUpperCase(),
-          style: Theme.of(context).textTheme.titleLarge, // Originale Schriftgröße
+          style: Theme.of(context).textTheme.titleLarge, 
         ),
       ),
     );
@@ -209,14 +216,24 @@ class JjkTile extends StatelessWidget {
 
 // --- 
 class JjkGamePage extends StatefulWidget {
-  const JjkGamePage({super.key});
+  final int wordLength; // NEW: Accepts word length parameter
+
+  // Default to 5 if nothing is specified
+  const JjkGamePage({super.key, this.wordLength = 5});
 
   @override
   State<JjkGamePage> createState() => _JjkGamePageState();
 }
 
 class _JjkGamePageState extends State<JjkGamePage> {
-  final JjkGame _game = JjkGame();
+  late JjkGame _game; // NEW: changed to 'late' so we can initialize it dynamically
+
+  @override
+  void initState() {
+    super.initState();
+    // NEW: Initialize game with the dynamically provided wordLength
+    _game = JjkGame(wordLength: widget.wordLength);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -271,14 +288,16 @@ class _JjkGamePageState extends State<JjkGamePage> {
             ),
             const SizedBox(height: 20),
             JjkGuessInput(
+              expectedLength: widget.wordLength, // NEW: Pass length to input field
               onSubmitGuess: (String guess) {
-                if (guess.length == 5 && _game.isLegalGuess(guess)) {
+                // NEW: Validate against dynamic wordLength
+                if (guess.length == widget.wordLength && _game.isLegalGuess(guess)) {
                   setState(() {
                     _game.guess(guess);
                   });
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Wort existiert nicht in der JJK-Datenbank')),
+                     SnackBar(content: Text('Wort muss ${widget.wordLength} Buchstaben haben und in der JJK-Datenbank existieren!')),
                   );
                 }
               },
@@ -290,9 +309,11 @@ class _JjkGamePageState extends State<JjkGamePage> {
 }
 
 class JjkGuessInput extends StatelessWidget {
-  JjkGuessInput({super.key, required this.onSubmitGuess});
+  // NEW: Added expectedLength parameter
+  JjkGuessInput({super.key, required this.onSubmitGuess, required this.expectedLength});
 
   final void Function(String) onSubmitGuess;
+  final int expectedLength; // NEW
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -310,7 +331,7 @@ class JjkGuessInput extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              maxLength: 5,
+              maxLength: expectedLength, // NEW: Limit textfield input to required length
               focusNode: _focusNode,
               autofocus: true,
               decoration: const InputDecoration(
