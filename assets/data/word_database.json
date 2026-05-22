@@ -1,0 +1,34 @@
+{
+    "metadata": {
+        "category": "Jujutsu Kaisen",
+        "word-length": 5,
+        "generated_at": "2026-05-22T09:17.339Z"
+    },
+
+    "data": [
+        {
+            "id": "1",
+            "value": "Panda"
+        },
+        {
+            "id": "2",
+            "value":"Choso"
+        },
+        {
+            "id": "3",
+            "value":"Shoko"
+        },
+        {
+            "id": "4",
+            "value": "Tokyo"
+        },
+        {
+            "id": "5",
+            "value": "Kyoto"
+        },
+        {
+            "id": "6",
+            "value": "Yuuji"
+        }
+    ]
+}
