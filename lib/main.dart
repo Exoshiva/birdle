@@ -39,7 +39,7 @@ class _MainAppState extends State<MainApp> {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1), // minimal height for the shadow 
             child: Container(
-              color: Colors.black.withOpacity(0.15), // subtle shadow color
+              color: Colors.black.withValues(alpha: 0.15), // subtle shadow color
               height: 1.0, // thickness of the shadow
             ),
           ),
@@ -196,9 +196,9 @@ class _MainAppState extends State<MainApp> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.15), 
+                      color: Colors.green.withValues(alpha: 0.15), 
                       borderRadius: BorderRadius.circular(20), // Rounded corners
-                      border: Border.all(color: Colors.green.withOpacity(0.3)), // Green border
+                      border: Border.all(color: Colors.green.withValues(alpha:0.3)), // Green border
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min, // Wrap content 
