@@ -1,5 +1,7 @@
 # Birdle 🐦 - Flutter Basics
 
+[![Flutter CI](https://github.com/Exoshiva/birdle/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/Exoshiva/birdle/actions/workflows/flutter_ci.yml)
+
 Ein Wordle-Klon, entwickelt als erstes Praxisprojekt zur systematischen Einarbeitung in Dart und das Flutter-Framework. 
 
 Das primäre Ziel dieses Repositories war das praktische Verstehen der Flutter-Kernarchitektur, um ein solides Fundament für kommende, komplexere App-Projekte zu legen.
@@ -17,6 +19,15 @@ Während der Entwicklung dieses Projekts habe ich folgende Konzepte in Flutter a
 ## 🛠 Tech-Stack
 * **Sprache:** Dart
 * **Framework:** Flutter SDK
+
+## ⚙️ CI/CD & Code-Qualität
+
+Dieses Projekt legt großen Wert auf eine saubere Architektur und Code-Qualität. Um dies zu gewährleisten, ist eine automatisierte CI/CD-Pipeline via **GitHub Actions** integriert:
+
+* **Automatisierter Linter:** Jeder Push wird strikt (`--fatal-warnings`) auf sauberen Dart-Code geprüft.
+* **Unit- & Widget-Tests:** Kritische Kernfunktionen (wie die Auswertung der Rate-Logik und dynamische Wortlängen) werden bei jedem Push durch automatisierte Tests abgesichert.
+* **Dependabot:** Automatische wöchentliche Überprüfung der Flutter- und Dart-Packages auf Sicherheitslücken und Updates.
+
 
 ## 💻 Lokales Ausführen
 
